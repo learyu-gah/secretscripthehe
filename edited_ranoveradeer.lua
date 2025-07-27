@@ -3537,7 +3537,7 @@ function run(Player)
 	local currentMorph = 1
 	game:GetService("UserInputService").InputBegan:Connect(function(input,gpe)
 		if not gpe then
-			if input.KeyCode == Enum.KeyCode.@ then
+			if input.KeyCode == Enum.KeyCode.RightCurly then
 				PlayerData[Player.Name].UVToggle = not PlayerData[Player.Name].UVToggle
 				Function.CharacterExecute(Player.Character, Player.Name)
 				warn("Toggled UV")
