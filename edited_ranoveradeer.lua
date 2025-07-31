@@ -43,8 +43,8 @@ function run(Player)
 
 	local SelectPlayer = Player.Name
 
-	local PositionPhysicsMultiply = 5
-	local RotationPhysicsMultiply = 4
+	local PositionPhysicsMultiply = 0
+	local RotationPhysicsMultiply = 0
 
 
 	function Function.PartListDefault()	
@@ -3543,16 +3543,16 @@ function run(Player)
 				warn("Toggled UV")
 			end
 			if input.KeyCode == Enum.KeyCode.RightBracket then
-				PlayerData[Player.Name].BreastsScale = PlayerData[Player.Name].BreastsScale+ 0.1
+				PlayerData[Player.Name].BreastsScale = PlayerData[Player.Name].BreastsScale+ 0.2
 				warn("Breasts set to "..	PlayerData[Player.Name].BreastsScale)
-				PlayerData[Player.Name].ButtsScale = PlayerData[Player.Name].ButtsScale+ 0.1
+				PlayerData[Player.Name].ButtsScale = PlayerData[Player.Name].ButtsScale+ 5
 				warn("Butts set to "..	PlayerData[Player.Name].ButtsScale)
 				Function.CharacterExecute(Player.Character, Player.Name)
 			end
 			if input.KeyCode == Enum.KeyCode.LeftBracket then
-				PlayerData[Player.Name].BreastsScale = PlayerData[Player.Name].BreastsScale- 0.5
+				PlayerData[Player.Name].BreastsScale = PlayerData[Player.Name].BreastsScale- 0.2
 				warn("Breasts set to "..	PlayerData[Player.Name].BreastsScale)
-				PlayerData[Player.Name].ButtsScale = PlayerData[Player.Name].ButtsScale- 0.5
+				PlayerData[Player.Name].ButtsScale = PlayerData[Player.Name].ButtsScale- 5
 				warn("Butts set to "..	PlayerData[Player.Name].ButtsScale)
 				Function.CharacterExecute(Player.Character, Player.Name)
 			end
