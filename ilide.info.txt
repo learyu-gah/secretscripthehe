@@ -1,14 +1,4 @@
---[[
-/  ＲＯＣＬＯＴＨＥＳ
-Version - 0.1
-Link - discord.gg/SD2scKR8kp
-| RoClothes Is Exploiting Script, Allowing Player To Have An Nude 
-BodyParts/Clothes
-Can Be Use On Any Executor
-| This Script Will Cause FPS Drop
-Because Of BodyParts/Clothes Mesh Inside Player Model
-|                     𝐔𝐒𝐄𝐀𝐓𝐘𝐎𝐔𝐑𝐎𝐖𝐍𝐑𝐈𝐒𝐊
-|            𝐖𝐎𝐑𝐊𝐈𝐍𝐏𝐑𝐎𝐆𝐑𝐄𝐒𝐒
+
 ]]
 -- Instances:
 local Screen = Instance.new("ScreenGui")
