@@ -2136,7 +2136,7 @@ function run(Player)
 							}
 						},
 						["Material"] = Enum.Material.SmoothPlastic,
-						["Shape"] = Enum.PartType.Block,
+						["Shape"] = Enum.PartType.Ball,
 						["Size"] = {
 							["y"] = 1.2389999628067017,
 							["x"] = 1.2519999742507935,
@@ -2181,7 +2181,7 @@ function run(Player)
 							}
 						},
 						["Material"] = Enum.Material.SmoothPlastic,
-						["Shape"] = Enum.PartType.Block,
+						["Shape"] = Enum.PartType.Ball,
 						["Size"] = {
 							["y"] = 1.2389999628067017,
 							["x"] = 1.2519999742507935,
