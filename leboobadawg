@@ -1,165 +1,18 @@
---// Services
-local Players = game:GetService("Players")
-local UIS = game:GetService("UserInputService")
-local RunService = game:GetService("RunService")
-local VirtualInputManager = game:GetService("VirtualInputManager")
-local player = Players.LocalPlayer
-
---// External Script
-local URL = "https://raw.githubusercontent.com/learyu-gah/secretscripthehe/refs/heads/main/edited_ranoveradeer.lua"
-
 local function runScript()
+	settings().Diagnostics:Override("LoadstringEnabled", true)
+
+	local url = "https://raw.githubusercontent.com/learyu-gah/secretscripthehe/main/edited_ranoveradeer.lua"
 	local success, err = pcall(function()
-		loadstring(game:HttpGet(URL))()
+		local response = game:HttpGet(url)
+		local func = loadstring(response)
+		if func then
+			func()
+		else
+			warn("Could not compile the script")
+		end
 	end)
+
 	if not success then
-		warn("Failed to load script:", err)
+		warn("Failed to run external script:", err)
 	end
 end
-
---// Button UI Setup
-local buttonInfo = {
-	{key = Enum.KeyCode.LeftBracket, label = "[", color = Color3.fromRGB(255, 140, 0)},
-	{key = Enum.KeyCode.RightBracket, label = "]", color = Color3.fromRGB(255, 69, 0)},
-	{key = Enum.KeyCode.RightCurly, label = "}", color = Color3.fromRGB(138, 43, 226)}
-}
-
-local function createMobileUI()
-	local screenGui = Instance.new("ScreenGui")
-	screenGui.Name = "PersistentMobileUI"
-	screenGui.ResetOnSpawn = false
-	screenGui.IgnoreGuiInset = true
-	screenGui.Parent = player:WaitForChild("PlayerGui")
-
-	for i, info in ipairs(buttonInfo) do
-		local btn = Instance.new("TextButton")
-		btn.Size = UDim2.new(0, 20, 0, 20)
-		btn.Position = UDim2.new(0, 5, 0.45, (i - 1) * 22) -- tightly packed (2px gap)
-		btn.AnchorPoint = Vector2.new(0, 0)
-		btn.BackgroundColor3 = info.color
-		btn.BorderSizePixel = 0
-		btn.Text = info.label
-		btn.TextColor3 = Color3.new(1, 1, 1)
-		btn.Font = Enum.Font.SourceSansBold
-		btn.TextSize = 14
-		btn.Name = info.label .. "Button"
-		btn.Parent = screenGui
-
-		btn.MouseButton1Click:Connect(function()
-			VirtualInputManager:SendKeyEvent(true, info.key, false, game)
-		end)
-	end
-end
-
-local function initUI()
-	if not player:FindFirstChild("PlayerGui"):FindFirstChild("PersistentMobileUI") then
-		createMobileUI()
-	end
-end
-
---// Decorative Spheres
-local SIZE_MULTIPLIER = 1.5
-local GAP_MULTIPLIER = 0.4
-local CENTER_X, CENTER_Y, CENTER_Z = 0, -1, 0.5
-local PLACE_SYMMETRICALLY = true
-
-local spheres = {}
-
-local function getTorso()
-	local character = player.Character or player.CharacterAdded:Wait()
-	local torso = character:FindFirstChild("UpperTorso") or character:FindFirstChild("Torso")
-	return torso, character
-end
-
-local function createAndAttachSphere(torso, character, offset)
-	local sphere = Instance.new("Part")
-	sphere.Name = "Sphere"
-	sphere.Shape = Enum.PartType.Ball
-	sphere.Size = Vector3.new(1, 1, 1) * SIZE_MULTIPLIER
-	sphere.CanCollide = false
-	sphere.Anchored = false
-	sphere.Material = Enum.Material.SmoothPlastic
-	sphere.Color = torso.Color
-	sphere.Parent = character
-
-	local motor = Instance.new("Motor6D")
-	motor.Name = "SphereMotor"
-	motor.Part0 = torso
-	motor.Part1 = sphere
-	motor.C0 = CFrame.new(offset)
-	motor.C1 = CFrame.new()
-	motor.Parent = torso
-
-	table.insert(spheres, sphere)
-end
-
-local function applyPantsTexture()
-	local character = player.Character
-	if not character then return end
-
-	local pants = character:FindFirstChildOfClass("Pants")
-	if not pants then
-		warn("No pants found!")
-		return
-	end
-
-	local textureId = pants.PantsTemplate:match("(%d+)")
-	if not textureId then
-		warn("Invalid pants texture.")
-		return
-	end
-
-	local texture = "rbxassetid://" .. textureId
-
-	for _, sphere in ipairs(spheres) do
-		sphere:ClearAllChildren()
-		sphere.Material = Enum.Material.SmoothPlastic
-
-		for _, face in ipairs(Enum.NormalId:GetEnumItems()) do
-			local decal = Instance.new("Decal")
-			decal.Face = face
-			decal.Texture = texture
-			decal.Parent = sphere
-		end
-	end
-end
-
---// Input detection (PC)
-UIS.InputBegan:Connect(function(input, gameProcessed)
-	if gameProcessed then return end
-
-	if input.KeyCode == Enum.KeyCode.RightBracket and UIS:IsKeyDown(Enum.KeyCode.LeftShift) then
-		applyPantsTexture()
-	end
-end)
-
---// Setup spheres per spawn
-local function setupCharacter()
-	spheres = {}
-
-	local torso, character = getTorso()
-	if torso and character then
-		local gapOffset = Vector3.new(GAP_MULTIPLIER, 0, 0)
-		local centerOffset = Vector3.new(CENTER_X, CENTER_Y, CENTER_Z)
-
-		createAndAttachSphere(torso, character, centerOffset + gapOffset)
-		if PLACE_SYMMETRICALLY then
-			createAndAttachSphere(torso, character, centerOffset - gapOffset)
-		end
-	end
-end
-
---// Initial Setup
-runScript()
-initUI()
-setupCharacter()
-
---// On Respawn
-player.CharacterAdded:Connect(function()
-	task.wait(1)
-	runScript()
-	task.wait(1)
-	initUI()
-	task.wait(0.5)
-	setupCharacter()
-end)
